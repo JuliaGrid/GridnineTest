@@ -12,7 +12,7 @@ const FlightSegment: React.FC<Props> = ({ seg }) => {
       <div className="flight__segment">
         <div className="flight__cities">
           <span>
-            {seg.departureCity.caption}, {seg.departureAirport.caption}{" "}
+            {seg.departureCity?.caption}, {seg.departureAirport.caption}{" "}
             <span className="blue">({seg.departureAirport.uid})</span>
           </span>
           <span className="blue"> → </span>
@@ -35,7 +35,7 @@ const FlightSegment: React.FC<Props> = ({ seg }) => {
               {writeTime(seg.arrivalDate)}
             </div>
           </div>
-          <p>
+          <p className="flight__airline">
             Рейс выполняет: {seg.airline.uid} {seg.airline.caption}
           </p>
         </div>

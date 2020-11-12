@@ -1,5 +1,5 @@
 .flight {
-  border-bottom: 2px solid darkblue;
+  border-bottom: 2px solid #0088ca;
 }
 
 .flight__header {
@@ -11,9 +11,24 @@
   padding-right: 100px;
 }
 
+.flight__carrier {
+  font-size: 20px;
+  width: 49%;
+}
+
+.flight__price {
+  width: 49%;
+  text-align: right;
+}
+
 .flight__amount {
   font-size: 18px;
   text-align: right;
+}
+
+.flight__duration {
+  text-align: center;
+  margin-top: 0;
 }
 
 .flight__transfer {
@@ -21,7 +36,7 @@
   margin: auto;
   margin-top: 20px;
   margin-bottom: 14px;
-  border-top: 2px solid orange;
+  border-top: 2px solid #ffb368;
 }
 
 .flight__transfer-number {
@@ -30,4 +45,18 @@
   text-align: center;
   margin: auto;
   margin-top: -15px;
+  color: #ffb368;
+}
+
+.flight__button {
+  width: 100%;
+  background: #ffb368;
+  color: white;
+  border: none;
+  outline: none;
+  text-transform: uppercase;
+  font-size: 16px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
 }

@@ -5,9 +5,51 @@
 .form {
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
+  color: #405568;
+}
+
+.form input {
+  color: inherit;
+}
+
+.form__title {
+  margin-bottom: 10px;
+}
+
+.form__price {
+  display: flex;
+  justify-content: space-between;
+  width: 200px;
+}
+
+.form__button {
+  width: 100px;
+  margin: auto;
+  margin-top: 30px;
+  margin-left: 10%;
+  background: #405568;
+  color: white;
+  text-transform: uppercase;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  border: none;
+  outline: none;
 }
 
 .main__wrapper {
   display: flex;
   justify-content: space-between;
+}
+
+.menu__wrapper {
+  width: 90%;
+  margin: auto;
+  margin-top: 50px;
+}
+
+@media (max-width: 500px) {
+  .main__wrapper {
+    flex-direction: column;
+  }
 }

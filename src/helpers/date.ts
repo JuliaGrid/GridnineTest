@@ -1,5 +1,4 @@
 export const writeDate = (date: string) => {
-  const date1 = new Date(date);
   let sliceDate = date.split("T")[0].split("-");
   let month = sliceDate[1];
   switch (month) {
@@ -50,4 +49,10 @@ export const writeTime = (time: string) => {
   let sliceDate = time.split("T");
   let sliceTime = sliceDate[1].split(":");
   return sliceTime[0] + ":" + sliceTime[1];
+};
+
+export const writeHours = (minutes: any) => {
+  let hours = Math.floor(minutes / 60);
+  let residue = minutes % 60;
+  return hours + "ч" + residue + "мин";
 };

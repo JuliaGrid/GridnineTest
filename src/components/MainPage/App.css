@@ -1,0 +1,13 @@
+.menu {
+  width: 25%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.main__wrapper {
+  display: flex;
+  justify-content: space-between;
+}

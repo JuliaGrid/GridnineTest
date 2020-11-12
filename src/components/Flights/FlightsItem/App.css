@@ -1,0 +1,33 @@
+.flight {
+  border-bottom: 2px solid darkblue;
+}
+
+.flight__header {
+  background: #0088ca;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  padding-left: 100px;
+  padding-right: 100px;
+}
+
+.flight__amount {
+  font-size: 18px;
+  text-align: right;
+}
+
+.flight__transfer {
+  width: 300px;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 14px;
+  border-top: 2px solid orange;
+}
+
+.flight__transfer-number {
+  background: white;
+  width: 120px;
+  text-align: center;
+  margin: auto;
+  margin-top: -15px;
+}

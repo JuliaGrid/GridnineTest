@@ -1,0 +1,26 @@
+.flight__cities {
+  border-bottom: 1px solid lightgray;
+  margin-top: 8px;
+  padding-bottom: 8px;
+}
+
+.flight__segment {
+  width: 80%;
+  margin: auto;
+}
+
+.flight__time {
+  text-align: center;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 8px;
+}
+
+.blue {
+  color: #0088ca;
+}
+
+.flight__date {
+  color: #0088ca;
+  font-size: 14px;
+}

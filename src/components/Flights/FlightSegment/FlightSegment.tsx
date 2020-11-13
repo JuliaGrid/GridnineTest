@@ -1,9 +1,10 @@
 import React from "react";
 import "./App.css";
 import { writeDate, writeTime } from "../../../helpers/date";
+import { FlightSegType } from "../../../types/flights";
 
 interface Props {
-  seg: any;
+  seg: FlightSegType;
 }
 
 const FlightSegment: React.FC<Props> = ({ seg }) => {

@@ -10,7 +10,7 @@ interface Props {
 const FlightsItem: React.FC<Props> = ({ item }) => {
   let { flight } = item;
 
-  const renderSegments = (seg: any, number: any) => {
+  const renderSegments = (seg: any[], number: number) => {
     let segments = [];
     for (let i = 0; i < seg.length; i++) {
       segments.push(<FlightSegment seg={seg[i]} />);
@@ -51,9 +51,6 @@ const FlightsItem: React.FC<Props> = ({ item }) => {
           </div>
         </div>
         <div className="flight">
-          {/*flight.legs[0].segments.map((seg: any) => (
-            <FlightSegment seg={seg} />
-          ))*/}
           {renderSegments(flight.legs[0].segments, 0)}
         </div>
         <div>{renderSegments(flight.legs[1].segments, 1)}</div>

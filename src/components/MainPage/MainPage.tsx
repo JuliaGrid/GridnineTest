@@ -2,34 +2,28 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import FlightsList from "../Flights/FlightsList/FlightsList";
 import DataFlights from "../../utils/flights.json";
-import { FlightType, FlightsPriceType } from "../../types/flights";
+import {
+  FlightPriceType,
+  FlightDurationType,
+  FlightCarrierType,
+  FlightSegmentsType,
+} from "../../types/flights";
+import {
+  sortInit,
+  transferInit,
+  airlineInit,
+  airlineCaptionInit,
+  priceInit,
+} from "../../initState/mainPage";
 
 const MainPage: React.FC = () => {
   let [flights, setFlights]: any = useState([]);
   let [searched, setSearched] = useState(false);
-  let [sort, setSort] = useState({
-    increase: false,
-    decrease: false,
-    time: false,
-  });
-  let [checkbox, setCheckbox] = useState({
-    transfer1: false,
-    transferNo: false,
-  });
-  let [airline, setAirline] = useState({
-    AirFrance: false,
-    KLM: false,
-    Airflot: false,
-  });
-  let [airlineCaption, setAirlineCaption] = useState({
-    AirFrance: "",
-    KLM: "",
-    Airflot: "",
-  });
-  let [price, setPrice] = useState({
-    min: "0",
-    max: "999999999",
-  });
+  let [sort, setSort] = useState(sortInit);
+  let [transfer, setTransfer] = useState(transferInit);
+  let [airline, setAirline] = useState(airlineInit);
+  let [airlineCaption, setAirlineCaption] = useState(airlineCaptionInit);
+  let [price, setPrice] = useState(priceInit);
 
   let dataFromBack: any = DataFlights;
   useEffect(() => {
@@ -39,37 +33,39 @@ const MainPage: React.FC = () => {
   const sortFlights = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    let flightsCopy = flights.slice();
     let value = e.currentTarget.value;
-    function sortIncrease(a: FlightsPriceType, b: FlightsPriceType) {
-      return a.flight.price.total.amount - b.flight.price.total.amount;
-    }
-    function sortDecrease(a: FlightsPriceType, b: FlightsPriceType) {
-      return b.flight.price.total.amount - a.flight.price.total.amount;
-    }
-    function sortTime(a: any, b: any) {
-      return a.flight.legs[0].duration - b.flight.legs[0].duration;
-    }
     if (value === "increase") {
-      setFlights(flightsCopy.sort(sortIncrease));
+      setFlights(
+        flights.sort((a: FlightPriceType, b: FlightPriceType) => {
+          return a.flight.price.total.amount - b.flight.price.total.amount;
+        })
+      );
       setSort({ increase: true, decrease: false, time: false });
     } else if (value === "decrease") {
-      setFlights(flightsCopy.sort(sortDecrease));
+      setFlights(
+        flights.sort((a: FlightPriceType, b: FlightPriceType) => {
+          return b.flight.price.total.amount - a.flight.price.total.amount;
+        })
+      );
       setSort({ increase: false, decrease: true, time: false });
     } else if (value === "time") {
-      setFlights(flightsCopy.sort(sortTime));
+      setFlights(
+        flights.sort((a: FlightDurationType, b: FlightDurationType) => {
+          return a.flight.legs[0].duration - b.flight.legs[0].duration;
+        })
+      );
       setSort({ increase: false, decrease: false, time: true });
     }
   };
 
   const filterTransferFlights = () => {
     let result = flights;
-    if (checkbox.transfer1) {
-      result = flights.filter((flight: FlightType) => {
+    if (transfer.transfer1) {
+      result = flights.filter((flight: FlightSegmentsType) => {
         return Number(flight.flight.legs[0].segments.length) === 2;
       });
-    } else if (checkbox.transferNo) {
-      result = flights.filter((flight: FlightType) => {
+    } else if (transfer.transferNo) {
+      result = flights.filter((flight: FlightSegmentsType) => {
         return Number(flight.flight.legs[0].segments.length) === 1;
       });
     }
@@ -78,7 +74,7 @@ const MainPage: React.FC = () => {
   };
 
   const filterPriceFlights = () => {
-    let result = flights.filter((flight: any) => {
+    let result = flights.filter((flight: FlightPriceType) => {
       return (
         Number(flight.flight.price.total.amount) >= Number(price.min) &&
         Number(flight.flight.price.total.amount) <= Number(price.max)
@@ -89,11 +85,10 @@ const MainPage: React.FC = () => {
   };
 
   const filterAirlineFlights = () => {
-    console.log(airlineCaption);
-    let result: any = [];
+    let result: any[] = [];
     if (airline.AirFrance) {
       result = result.concat(
-        flights.filter((flight: any) => {
+        flights.filter((flight: FlightCarrierType) => {
           return flight.flight.carrier.caption.includes(
             airlineCaption.AirFrance
           );
@@ -102,25 +97,27 @@ const MainPage: React.FC = () => {
     }
     if (airline.KLM) {
       result = result.concat(
-        flights.filter((flight: any) => {
+        flights.filter((flight: FlightCarrierType) => {
           return flight.flight.carrier.caption.includes(airlineCaption.KLM);
         })
       );
     }
     if (airline.Airflot) {
       result = result.concat(
-        flights.filter((flight: any) => {
+        flights.filter((flight: FlightCarrierType) => {
           return flight.flight.carrier.caption.includes(airlineCaption.Airflot);
         })
       );
     }
-
+    if (!airline.AirFrance && !airline.KLM && !airline.Airflot) {
+      result = flights;
+    }
     setFlights(result);
   };
 
   const handleChangeTransfer = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { target } = e;
-    setCheckbox({ ...checkbox, [e.target.name]: target.checked });
+    setTransfer({ ...transfer, [e.target.name]: target.checked });
   };
 
   const handleChangeAirline = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -142,36 +139,22 @@ const MainPage: React.FC = () => {
 
   const search = () => {
     filterPriceFlights();
-    if (checkbox.transferNo || checkbox.transfer1) filterTransferFlights();
+    if (transfer.transferNo || transfer.transfer1) {
+      filterTransferFlights();
+    }
     filterAirlineFlights();
     setSearched(true);
   };
 
   const lose = () => {
-    setCheckbox({
-      transfer1: false,
-      transferNo: false,
-    });
-    setPrice({
-      min: "0",
-      max: "99999999",
-    });
-    setAirline({
-      AirFrance: false,
-      KLM: false,
-      Airflot: false,
-    });
-    setAirlineCaption({
-      AirFrance: "",
-      KLM: "",
-      Airflot: "",
-    });
-    setSort({ increase: false, decrease: false, time: false });
+    setTransfer(transferInit);
+    setPrice(priceInit);
+    setAirline(airlineInit);
+    setAirlineCaption(airlineCaptionInit);
+    setSort(sortInit);
     setFlights(dataFromBack.result.flights);
     setSearched(false);
   };
-
-  console.log(flights);
 
   return (
     <>
@@ -219,7 +202,7 @@ const MainPage: React.FC = () => {
                   <input
                     type="checkbox"
                     name="transfer1"
-                    checked={checkbox.transfer1}
+                    checked={transfer.transfer1}
                     onChange={handleChangeTransfer}
                   />
                   1 пересадка
@@ -228,7 +211,7 @@ const MainPage: React.FC = () => {
                   <input
                     type="checkbox"
                     name="transferNo"
-                    checked={checkbox.transferNo}
+                    checked={transfer.transferNo}
                     onChange={handleChangeTransfer}
                   />
                   без пересадок
@@ -293,7 +276,6 @@ const MainPage: React.FC = () => {
 
               {!searched ? (
                 <button onClick={search} className="form__button">
-                  {" "}
                   искать
                 </button>
               ) : (
